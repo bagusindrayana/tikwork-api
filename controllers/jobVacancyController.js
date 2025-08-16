@@ -1,21 +1,23 @@
-const { Op } = require('sequelize');
+const { Op, Sequelize } = require('sequelize');
 const JobVacancy = require('../models/JobVacancy');
 
 // Create a new job vacancy
 exports.createJob = async (req, res) => {
   try {
     const findJob = await JobVacancy.findOne({ where: { job_id: req.body.job_id } });
-    if(findJob){
+    if (findJob) {
       findJob.job_title = req.body.job_title;
       findJob.job_description = req.body.job_description;
       findJob.job_salary = req.body.job_salary;
+      findJob.job_type = req.body.job_type;
+      findJob.job_misc_data = req.body.job_misc_data;
       await findJob.save();
       res.status(201).json(findJob);
     } else {
       const job = await JobVacancy.create(req.body);
       res.status(201).json(job);
     }
-    
+
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -94,25 +96,41 @@ exports.getForYouJobs = async (req, res) => {
     const { location, categories, type, minSalary } = req.query;
     let where = {};
 
-    if (location) where.job_location = location;
-    if (type) where.job_type = type;
-    if (minSalary) where.job_salary = { [Op.gte]: minSalary };
-
+    // if (location) where.job_location = location;
+    // if (type) where.job_type = type;
+    // if (minSalary) where.job_salary = { [Op.gte]: minSalary };
+    let orConditions = []
     if (categories) {
-      where.job_category = {
-        [Op.overlap]: categories.split(',')
-      };
+
+      orConditions = categories.split(",").map(category => {
+        const escaped = category.replace(/'/g, "\\'"); // Escape single quotes for safety
+        return `JSON_SEARCH(LOWER(JSON_EXTRACT(job_category, '$')), 'one', '%${escaped.toLowerCase()}%') IS NOT NULL`;
+      });
+
     }
+
+
+    const whereClause = orConditions.join(' OR ');
 
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const offset = (page - 1) * limit;
-
+  
     const { count, rows } = await JobVacancy.findAndCountAll({
-      where,
+      where: whereClause != "" ? Sequelize.literal(`(${whereClause})`) : {},
+      // where: {
+      //   Sequelize.literal(`JSON_CONTAINS(job_category, '["Sales Management"]')`)
+      // },
+      // where: {
+      //   [Op.and]: [
+      //     Sequelize.where(Sequelize.fn('JSON_CONTAINS', Sequelize.col('job_category'), '$.notifications.email'), true),
+      //     Sequelize.where(Sequelize.fn('JSON_EXTRACT', Sequelize.col('preferences'), '$.notifications.sms'), false)
+      //   ]
+      // },
       order: [
         ['view_count', 'DESC'],
-        ['love_count', 'DESC']
+        ['love_count', 'DESC'],
+        ['job_created_date', 'DESC']
       ],
       limit,
       offset
