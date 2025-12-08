@@ -7,6 +7,8 @@ const app = express();
 
 // Middleware
 app.use(bodyParser.json());
+app.set('view engine', 'ejs');
+app.set('views', './views');
 
 // Routes
 app.use('/api/jobs', jobVacancyRoutes);

@@ -115,7 +115,7 @@ exports.getForYouJobs = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const offset = (page - 1) * limit;
-  
+
     const { count, rows } = await JobVacancy.findAndCountAll({
       where: whereClause != "" ? Sequelize.literal(`(${whereClause})`) : {},
       // where: {
@@ -169,5 +169,33 @@ exports.getExploreJobs = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+};
+
+// Generate Job Poster
+exports.getJobPoster = async (req, res) => {
+  try {
+    const job = await JobVacancy.findByPk(req.params.id);
+    if (!job) {
+      return res.status(404).send('Job not found');
+    }
+
+    // Determine theme based on job type or other attributes
+    let theme = 'modern'; // Default
+    const jobType = (job.job_type || '').toLowerCase();
+
+    if (jobType.includes('full')) {
+      theme = 'professional';
+    } else if (jobType.includes('intern') || jobType.includes('magang')) {
+      theme = 'playful';
+    } else if (jobType.includes('contract') || jobType.includes('kontrak')) {
+      theme = 'bold';
+    } else if (jobType.includes('part') || jobType.includes('paruh')) {
+      theme = 'casual';
+    }
+
+    res.render('poster', { job, theme });
+  } catch (error) {
+    res.status(500).send(error.message);
   }
 };

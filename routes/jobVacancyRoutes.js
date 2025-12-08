@@ -9,6 +9,7 @@ router.get('/explore', jobVacancyController.getExploreJobs);
 // CRUD routes
 router.post('/', jobVacancyController.createJob);
 router.get('/', jobVacancyController.getAllJobs);
+router.get('/:id/poster', jobVacancyController.getJobPoster);
 router.get('/:id', jobVacancyController.getJob);
 router.put('/:id', jobVacancyController.updateJob);
 router.delete('/:id', jobVacancyController.deleteJob);
