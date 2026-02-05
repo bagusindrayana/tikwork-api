@@ -95,7 +95,7 @@ exports.deleteJob = async (req, res) => {
 // Get personalized "For You" jobs
 exports.getForYouJobs = async (req, res) => {
   try {
-    const { location, categories, type, minSalary } = req.query;
+    const { location, categories, type, minSalary, search } = req.query;
     let where = {};
 
     // if (location) where.job_location = location;
@@ -109,6 +109,16 @@ exports.getForYouJobs = async (req, res) => {
         return `JSON_SEARCH(LOWER(JSON_EXTRACT(job_category, '$')), 'one', '%${escaped.toLowerCase()}%') IS NOT NULL`;
       });
 
+    }
+
+    if (search) {
+      orConditions.push(`job_title LIKE '%${search}%'`);
+      orConditions.push(`job_company_name LIKE '%${search}%'`);
+      orConditions.push(`job_category LIKE '%${search}%'`);
+      orConditions.push(`job_location LIKE '%${search}%'`);
+      orConditions.push(`job_type LIKE '%${search}%'`);
+      orConditions.push(`job_salary LIKE '%${search}%'`);
+      orConditions.push(`job_description LIKE '%${search}%'`);
     }
 
 
@@ -154,8 +164,24 @@ exports.getExploreJobs = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
+    const search = req.query.search || '';
     const offset = (page - 1) * limit;
+
+    let orConditions = []
+    if (search != "") {
+      orConditions.push(`job_title LIKE '%${search}%'`);
+      orConditions.push(`job_company_name LIKE '%${search}%'`);
+      orConditions.push(`job_category LIKE '%${search}%'`);
+      orConditions.push(`job_location LIKE '%${search}%'`);
+      orConditions.push(`job_type LIKE '%${search}%'`);
+      orConditions.push(`job_salary LIKE '%${search}%'`);
+      orConditions.push(`job_description LIKE '%${search}%'`);
+    }
+
+    const whereClause = orConditions.join(' OR ');
+
     const { count, rows } = await JobVacancy.findAndCountAll({
+      where: whereClause != "" ? Sequelize.literal(`(${whereClause})`) : {},
       order: [
         ['view_count', 'DESC'],
         ['love_count', 'DESC']
