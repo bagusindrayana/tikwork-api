@@ -46,6 +46,39 @@ Base URL: `/api/jobs`
 | `PUT` | `/api/jobs/:id` | Mengupdate data lowongan |
 | `DELETE` | `/api/jobs/:id` | Menghapus data lowongan |
 
+### Generate Poster (HTML)
+Endpoint poster akan me-render halaman HTML rasio 9:16 yang cocok untuk screenshot/convert jadi poster.
+
+| Method | Endpoint | Deskripsi |
+|--------|----------|-----------|
+| `GET` | `/api/jobs/:id/poster` | Generate poster dari data lowongan |
+
+Contoh:
+
+```bash
+# Auto style (seeded dari job_id)
+GET /api/jobs/123/poster
+
+# Paksa gaya TikWork (TikTok-like) + pilih template
+GET /api/jobs/123/poster?theme=tikwork&template=ui
+GET /api/jobs/123/poster?theme=tikwork&template=sticker
+GET /api/jobs/123/poster?theme=tikwork&template=caption
+GET /api/jobs/123/poster?theme=tikwork&template=duet
+GET /api/jobs/123/poster?theme=tikwork&template=minimal
+```
+
+Query params yang didukung (opsional):
+- **theme**: `tikwork` (default), `modern`, `professional`, `playful`, `bold`, `casual`
+- **template** (khusus `theme=tikwork`): `auto`, `sticker`, `ui`, `caption`, `duet`, `minimal`
+- **variation**: `default`, `dark`, `light`, `neon` (terutama untuk `tikwork`)
+- **pattern**: `none`, `dots`, `lines`, `grid`, `circle`
+- **font**: `default`, `serif`, `mono`, `display`, `handwriting`
+- **layout**: `default`, `centered`, `inverted`, `split`
+- **align**: `left`, `center`, `right`
+- **density**: `high`, `medium`, `low`
+- **color**: override warna aksen (contoh `#00F2EA`)
+- **bg**: URL gambar background
+
 ## 🗃 Skema Database
 Model: **JobVacancy** (Tabel: `job_vacancies`)
 
