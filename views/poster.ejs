@@ -4,214 +4,357 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Poster - <%= job.job_title %></title>
-    <!-- Expanded Google Fonts Collection -->
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;700&family=Montserrat:wght@400;700;900&family=Outfit:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Roboto+Mono:wght@400;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            /* Palette 1: Modern (Blue/Purple) */
-            --modern-bg: linear-gradient(135deg, #1e1e2f 0%, #2d2b4a 100%);
-            --modern-accent: #6c5ce7;
-            --modern-text: #ffffff;
-            --modern-card: rgba(255, 255, 255, 0.1);
-
-            /* Palette 2: Professional (Navy/Gold) */
-            --prof-bg: #0f172a;
-            --prof-accent: #fbbf24;
-            --prof-text: #f8fafc;
-            --prof-card: #1e293b;
-
-            /* Palette 3: Playful (Vibrant) */
-            --play-bg: #FFE53B;
-            --play-bg-grad: linear-gradient(147deg, #FFE53B 0%, #FF2525 74%);
-            --play-accent: #ffffff;
-            --play-text: #2d3436;
-            --play-card: rgba(255, 255, 255, 0.9);
-
-            /* Palette 4: Bold (Black/Neons) */
-            --bold-bg: #000000;
-            --bold-accent: #00ff88;
-            --bold-text: #ffffff;
-            --bold-card: #111111;
-
-            /* Palette 5: Casual (Soft/Clean) */
-            --casual-bg: #f3f4f6;
-            --casual-accent: #3b82f6;
-            --casual-text: #1f2937;
-            --casual-card: #ffffff;
-
-            /* Palette 6: TikWork (TikTok Style) Defaults */
-            --tik-bg: #000000;
-            --tik-text: #ffffff;
-            --tik-accent: #00F2EA;
-            --tik-secondary: #FF0050;
-            --tik-grad: linear-gradient(45deg, #FF0050, #00F2EA);
+            --nav-height: 60px;
         }
-
-        /* Dynamic Overrides */
-        <% if (config.primaryColor) { %>
-            :root {
-                --tik-accent: <%= config.primaryColor %>;
-                --tik-secondary: #ffffff;
-                --tik-grad: linear-gradient(45deg, <%= config.primaryColor %>, #000);
+    </style>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            /* Pattern utilities */
+            .pattern-radial-dots {
+                background-image: radial-gradient(currentColor 1px, transparent 1px);
+                background-size: 24px 24px;
             }
-        <% } %>
-
-        /* TikWork Variations */
-        <% if (config.variation === 'dark') { %>
-            :root { --tik-bg: #121212; --tik-grad: #121212; }
-        <% } else if (config.variation === 'light') { %>
-            :root { --tik-bg: #ffffff; --tik-text: #000000; --tik-grad: #ffffff; --tik-accent: #000; --tik-secondary: #fe2c55; }
-        <% } else if (config.variation === 'neon') { %>
-            :root { --tik-bg: #000000; --tik-grad: linear-gradient(135deg, #00ff00, #0000ff); --tik-accent: #00ff00; --tik-secondary: #ff00ff; }
-        <% } %>
-
-        /* Background Image Support */
-        <% if (config.backgroundImage) { %>
-            .poster-container {
-                background-image: url('<%= config.backgroundImage %>') !important;
-                background-size: cover !important;
-                background-position: center !important;
+            .pattern-grid-lines {
+                background-image: 
+                    repeating-linear-gradient(0deg, transparent, transparent 49px, currentColor 50px),
+                    repeating-linear-gradient(90deg, transparent, transparent 49px, currentColor 50px);
             }
-            .tik-backdrop {
-                background: rgba(0,0,0,0.6) !important; /* Ensure readability */
+            .pattern-diagonal-stripes {
+                background: repeating-linear-gradient(45deg, transparent, transparent 10px, currentColor 10px, currentColor 20px);
             }
-        <% } %>
-
-        /* === PATTERNS === */
-        .pattern-dots {
-            background-image: radial-gradient(rgba(255,255,255,0.1) 2px, transparent 2px);
-            background-size: 30px 30px;
+            .pattern-zigzag {
+                background-image: 
+                    linear-gradient(135deg, currentColor 25%, transparent 25%),
+                    linear-gradient(225deg, currentColor 25%, transparent 25%),
+                    linear-gradient(45deg, currentColor 25%, transparent 25%),
+                    linear-gradient(315deg, currentColor 25%, transparent 25%);
+                background-position: 10px 0, 10px 0, 0 0, 0 0;
+                background-size: 20px 20px;
+                background-repeat: repeat;
+            }
+            .pattern-polka-pop {
+                background-image: 
+                    radial-gradient(currentColor 20%, transparent 20%),
+                    radial-gradient(currentColor 20%, transparent 20%);
+                background-position: 0 0, 15px 15px;
+                background-size: 30px 30px;
+            }
+            .pattern-waves {
+                background-image: radial-gradient(circle at 100% 50%, transparent 20px, currentColor 20px, currentColor 22px, transparent 22px),
+                    radial-gradient(circle at 0 50%, transparent 20px, currentColor 20px, currentColor 22px, transparent 22px);
+                background-size: 44px 44px;
+                background-position: 0 0, 22px 22px;
+            }
+            
+            /* Custom font classes */
+            .font-oswald { font-family: 'Oswald', sans-serif; }
+            .font-comic { font-family: 'Comic Sans MS', cursive; }
+            .font-retro { font-family: 'Press Start 2K', monospace; }
+            .font-display-heavy { font-family: 'Impact', sans-serif; }
+            
+            /* Title sizing */
+            .title-short { font-size: clamp(2.2rem, 5.2vw, 3.6rem); }
+            .title-medium { font-size: clamp(1.8rem, 4.6vw, 2.8rem); }
+            .title-long { font-size: clamp(1.4rem, 4.0vw, 2.0rem); word-wrap: break-word; }
+            .title-super-long { font-size: clamp(1.15rem, 3.6vw, 1.7rem); word-wrap: break-word; line-height: 1.15 !important; }
+            
+            /* Button styles */
+            .btn-solid-pill {
+                @apply rounded-full px-6 py-3 font-bold transition-all duration-300;
+            }
+            .btn-outline-neon {
+                @apply border-2 border-current bg-transparent rounded-full px-6 py-3 font-bold transition-all duration-300 hover:bg-current hover:text-background;
+            }
+            .btn-glass {
+                @apply backdrop-blur-lg bg-white/20 border border-white/30 rounded-full px-6 py-3 font-bold transition-all duration-300 hover:bg-white/30;
+            }
+            .btn-brutalist {
+                @apply border-4 border-current bg-background text-current font-bold px-6 py-3 transform hover:translate-x-1 hover:translate-y-1 transition-all duration-200;
+            }
+            .btn-gradient-shine {
+                @apply bg-gradient-to-r from-current to-current/80 rounded-full px-6 py-3 font-bold transition-all duration-300 hover:opacity-90;
+            }
+            
+            /* Layout utilities */
+            .layout-centered { @apply flex flex-col items-center justify-center text-center; }
+            .layout-left-aligned { @apply flex flex-col items-start justify-center text-left; }
+            .layout-card-center { @apply flex items-center justify-center; }
+            .layout-split-vertical { @apply flex flex-col justify-between text-center; }
+            .layout-minimalist { @apply flex flex-col items-center justify-center text-center gap-8; }
+            
+            /* Component ordering */
+            .order-1 { order: 1; }
+            .order-2 { order: 2; }
+            .order-3 { order: 3; }
+            .order-4 { order: 4; }
+            
+            /* Animation utilities */
+            @keyframes bounce {
+                0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+                40% { transform: translateY(-10px); }
+                60% { transform: translateY(-5px); }
+            }
+            .animate-bounce-custom {
+                animation: bounce 2s infinite;
+            }
         }
-        .pattern-lines {
-            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 1px, transparent 0, transparent 50%);
-            background-size: 20px 20px;
-        }
-        .pattern-grid {
-            background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
-            background-size: 40px 40px;
-        }
-        .pattern-circle {
-              background-image: radial-gradient(circle at center, rgba(255,255,255,0.08) 0%, transparent 60%);
-         }
-
-         /* === RESPONSIVE TITLE SIZES === */
-         .title-short { font-size: clamp(2.2rem, 5.2vw, 3.6rem); }
-         .title-medium { font-size: clamp(1.8rem, 4.6vw, 2.8rem); }
-         .title-long { font-size: clamp(1.4rem, 4.0vw, 2.0rem); word-wrap: break-word; }
-         .title-super-long { font-size: clamp(1.15rem, 3.6vw, 1.7rem); word-wrap: break-word; line-height: 1.15 !important; }
-
-         /* Mobile Adjustments for Titles */
-         @media (max-width: 480px) {
-            .title-short { font-size: 2.5rem; }
-            .title-medium { font-size: 2rem; }
-            .title-long { font-size: 1.5rem; }
-            .title-super-long { font-size: 1.2rem; }
-         }
-
-         /* === FONTS === */
-         .font-default { font-family: 'Plus Jakarta Sans', sans-serif; }
-         .font-serif { font-family: 'Playfair Display', serif; }
-         .font-mono { font-family: 'Roboto Mono', monospace; }
-         .font-display { font-family: 'Anton', sans-serif; letter-spacing: 1px; }
-         .font-handwriting { font-family: 'Permanent Marker', cursive; }
-         
-         /* === LAYOUT UTILS === */
-         .text-left { text-align: left; align-items: flex-start; }
-         .text-center { text-align: center; align-items: center; }
-         .text-right { text-align: right; align-items: flex-end; }
-         
-         .layout-centered { justify-content: center; }
-         .layout-inverted { flex-direction: column-reverse; justify-content: flex-end; }
-         .layout-split { justify-content: space-between; }
-         
-         /* Flex Order Helpers */
-         .order-1 { order: 1; }
-         .order-2 { order: 2; }
-         .order-3 { order: 3; }
-         .order-4 { order: 4; }
-
-         /* === THEME VARIATIONS === */
-         
-         /* Professional Variations */
-        <% if (config.theme === 'professional') { %>
-            <% if (config.variation === 'navy') { %>
-                :root { --prof-bg: #0a192f; --prof-accent: #64ffda; --prof-text: #e6f1ff; }
-            <% } else if (config.variation === 'slate') { %>
-                :root { --prof-bg: #334155; --prof-accent: #38bdf8; --prof-text: #f1f5f9; }
-            <% } else if (config.variation === 'dark') { %>
-                :root { --prof-bg: #000000; --prof-accent: #ffffff; --prof-text: #cccccc; }
-            <% } %>
-        <% } %>
-
-        /* Playful Variations */
-        <% if (config.theme === 'playful') { %>
-            <% if (config.variation === 'yellow') { %>
-                :root { --play-bg-grad: linear-gradient(135deg, #fce38a 0%, #f38181 100%); --play-accent: #fff; }
-            <% } else if (config.variation === 'pink') { %>
-                :root { --play-bg-grad: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); --play-text: #333; }
-            <% } else if (config.variation === 'orange') { %>
-                :root { --play-bg-grad: linear-gradient(135deg, #fff1eb 0%, #ace0f9 100%); --play-text: #333; }
-            <% } %>
+    </style>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body class="flex justify-center items-center min-h-screen bg-gray-900 p-0 m-0">
+    <% 
+        const palette = config.palette;
+        const pattern = config.pattern || 'none';
+        const font = config.font || 'font-sans';
+        const layout = config.layout || 'centered';
+        const decoration = config.decoration || 'none';
+        const buttonStyle = config.buttonStyle || 'solid-pill';
+        const titleLength = config.titleLength || 'medium';
+        const components = config.components || { badge: 1, title: 2, info: 3, cta: 4 };
+    %>
+    
+    <!-- Main Poster Container -->
+    <div class="w-full max-w-[420px] aspect-[9/16] relative overflow-hidden shadow-2xl <%= palette.bg %> <%= palette.text %> <%= font %>">
+        
+        <!-- Pattern Overlay -->
+        <% if (pattern !== 'none') { %>
+            <div class="absolute inset-0 opacity-10 <%= pattern === 'radial-dots' ? 'pattern-radial-dots' : '' %> <%= pattern === 'grid-lines' ? 'pattern-grid-lines' : '' %> <%= pattern === 'diagonal-stripes' ? 'pattern-diagonal-stripes' : '' %> <%= pattern === 'zigzag' ? 'pattern-zigzag' : '' %> <%= pattern === 'polka-pop' ? 'pattern-polka-pop' : '' %> <%= pattern === 'waves' ? 'pattern-waves' : '' %>"></div>
         <% } %>
         
-        /* Bold Variations */
-        <% if (config.theme === 'bold') { %>
-             <% if (config.variation === 'contrast') { %>
-                :root { --bold-bg: #ffffff; --bold-text: #000000; --bold-accent: #ff0000; --bold-card: #000000; }
-            <% } else if (config.variation === 'mono') { %>
-                :root { --bold-bg: #333333; --bold-text: #ffffff; --bold-accent: #aaaaaa; --bold-card: #555555; }
-            <% } %>
+        <!-- Decorative Elements -->
+        <% if (decoration === 'circles') { %>
+            <div class="absolute -top-20 -right-20 w-96 h-96 rounded-full <%= palette.accent %> blur-3xl opacity-50"></div>
+            <div class="absolute -bottom-20 -left-20 w-80 h-80 rounded-full <%= palette.accent %> blur-3xl opacity-50"></div>
+        <% } else if (decoration === 'watermark-logo') { %>
+            <div class="absolute inset-0 flex items-center justify-center opacity-5">
+                <div class="text-9xl font-bold">TIKWORK</div>
+            </div>
+        <% } else if (decoration === 'border-frame') { %>
+            <div class="absolute inset-0 border-8 border-current border-opacity-20 rounded-lg m-4"></div>
         <% } %>
-
-        /* Casual Variations */
-        <% if (config.theme === 'casual') { %>
-             <% if (config.variation === 'soft') { %>
-                :root { --casual-bg: #fff5f5; --casual-accent: #fc8181; }
-            <% } else if (config.variation === 'blue') { %>
-                :root { --casual-bg: #ebf8ff; --casual-accent: #63b3ed; }
-            <% } else if (config.variation === 'green') { %>
-                :root { --casual-bg: #f0fff4; --casual-accent: #68d391; }
+        
+        <!-- Content Container -->
+        <div class="absolute top-0 left-0 right-0 bottom-0 flex flex-col p-8 pt-12 overflow-hidden <%= 
+            layout === 'centered' ? 'layout-centered gap-6' :
+            layout === 'left-aligned' ? 'layout-left-aligned gap-6' :
+            layout === 'card-center' ? 'layout-card-center' :
+            layout === 'split-vertical' ? 'layout-split-vertical' :
+            layout === 'minimalist' ? 'layout-minimalist' :
+            layout === 'tiktok-modern' ? 'flex flex-col px-6 pt-24 pb-6 bg-gradient-to-b from-teal-900 via-gray-900 to-rose-900 text-white font-sans' :
+            layout === 'modern-split' ? 'flex flex-col pt-16 bg-white text-black font-sans' :
+            layout === 'cyber-grid' ? 'flex flex-col px-8 pt-12 pb-40 bg-zinc-900 text-green-400 font-mono' :
+            layout === 'bold-typography' ? 'flex flex-col justify-center px-6 pt-24 bg-neutral-900 text-white font-sans' :
+            layout === 'neobrutalism' ? 'flex flex-col p-3 pt-12 bg-[#FDF5E6] text-black font-sans' :
+            layout === 'glass-modern' ? 'flex flex-col px-8 pt-12 justify-center items-center bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white font-sans' :
+            layout === 'meme-design' ? 'flex flex-col p-4 pt-28 bg-white text-black font-serif' :
+            'layout-centered gap-6'
+        %>">
+            
+            <!-- 1. Badge/Sticker -->
+            <div class="order-<%= components.badge %> z-10">
+                <% if (layout === 'tiktok-modern' || layout === 'modern-split') { %>
+                    <div class="bg-white text-black px-4 py-2 font-bold text-lg rounded-lg inline-block transform rotate-[-2deg] shadow-lg">
+                        #hiring • TIKWORK
+                    </div>
+                <% } else if (layout === 'cyber-grid') { %>
+                    <div class="border border-green-400 px-4 py-2 font-mono text-sm inline-block">
+                        [HIRING_ACTIVE]
+                    </div>
+                <% } else if (layout === 'bold-typography') { %>
+                    <div class="bg-red-500 text-white px-6 py-3 font-bold text-xl inline-block transform rotate-[-3deg]">
+                        WE ARE HIRING
+                    </div>
+                <% } else if (layout === 'neobrutalism') { %>
+                    <div class="border-4 border-black bg-yellow-300 px-6 py-3 font-bold text-xl inline-block transform -rotate-2 shadow-[8px_8px_0px_0px_#000]">
+                        NOW HIRING!
+                    </div>
+                <% } else if (layout === 'glass-modern') { %>
+                    <div class="backdrop-blur-lg bg-white/20 border border-white/30 px-6 py-3 rounded-full font-bold inline-block">
+                        <i class="fas fa-bolt mr-2"></i>HIRING
+                    </div>
+                <% } else { %>
+                    <div class="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full font-bold inline-block">
+                        WE ARE HIRING
+                    </div>
+                <% } %>
+            </div>
+            
+            <!-- 2. Job Title -->
+            <div class="order-<%= components.title %> z-10 text-balance">
+                <% if (layout === 'tiktok-modern') { %>
+                    <h1 class="title-<%= titleLength %> font-black uppercase tracking-tight text-shadow-[3px_3px_0px_#FF0050] bg-black text-white inline p-2 box-decoration-clone">
+                        <%= job.job_title %>
+                    </h1>
+                <% } else if (layout === 'cyber-grid') { %>
+                    <h1 class="title-<%= titleLength %> font-mono font-bold tracking-wider text-green-400">
+                        <%= job.job_title.toUpperCase() %>
+                    </h1>
+                <% } else if (layout === 'bold-typography') { %>
+                    <h1 class="title-<%= titleLength %> font-black uppercase leading-none text-stroke-1 text-stroke-white text-transparent">
+                        <%= job.job_title %>
+                    </h1>
+                <% } else if (layout === 'neobrutalism') { %>
+                    <h1 class="title-<%= titleLength %> font-black uppercase tracking-tight border-4 border-black bg-white p-4 shadow-[12px_12px_0px_0px_#000]">
+                        <%= job.job_title %>
+                    </h1>
+                <% } else if (layout === 'glass-modern') { %>
+                    <h1 class="title-<%= titleLength %> font-bold bg-white/10 backdrop-blur-lg border border-white/20 p-4 rounded-2xl">
+                        <%= job.job_title %>
+                    </h1>
+                <% } else { %>
+                    <h1 class="title-<%= titleLength %> font-bold">
+                        <%= job.job_title %>
+                    </h1>
+                <% } %>
+            </div>
+            
+            <!-- 3. Info Block -->
+            <div class="order-<%= components.info %> z-10 w-full">
+                <% if (layout === 'tiktok-modern') { %>
+                    <div class="bg-black/60 backdrop-blur-sm p-4 rounded-xl border-l-4 border-[#00F2EA]">
+                        <div class="flex items-center gap-3 mb-2">
+                            <img src="<%= poster.companyLogo %>" alt="logo" class="w-8 h-8 rounded-full bg-white p-1">
+                            <span class="font-bold text-lg"><%= job.job_company_name %></span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm opacity-90">
+                            <i class="fas fa-map-marker-alt text-[#FF0050]"></i>
+                            <%= job.job_location || 'Remote' %> • <%= job.job_type || 'Full Time' %>
+                        </div>
+                        <% if (job.job_salary && job.job_salary !== 'Hidden') { %>
+                            <div class="text-2xl font-bold text-[#00F2EA] mt-2">
+                                <%= job.job_salary %>
+                            </div>
+                        <% } %>
+                    </div>
+                <% } else if (layout === 'cyber-grid') { %>
+                    <div class="border border-green-400 p-4 font-mono text-sm">
+                        <div class="mb-2">COMPANY: <span class="text-green-300"><%= job.job_company_name %></span></div>
+                        <div class="mb-2">LOCATION: <span class="text-green-300"><%= job.job_location || 'REMOTE' %></span></div>
+                        <div>TYPE: <span class="text-green-300"><%= job.job_type || 'FULL-TIME' %></span></div>
+                        <% if (job.job_salary && job.job_salary !== 'Hidden') { %>
+                            <div class="mt-3 text-green-300 font-bold">SALARY: <%= job.job_salary %></div>
+                        <% } %>
+                    </div>
+                <% } else if (layout === 'bold-typography') { %>
+                    <div class="bg-white/10 backdrop-blur p-6 rounded-xl border border-white/20">
+                        <div class="text-xl font-bold mb-3"><%= job.job_company_name %></div>
+                        <div class="opacity-80 mb-2"><i class="fas fa-map-marker-alt mr-2"></i><%= job.job_location || 'Remote' %></div>
+                        <div class="opacity-80 mb-3"><i class="fas fa-briefcase mr-2"></i><%= job.job_type || 'Full Time' %></div>
+                        <% if (job.job_salary && job.job_salary !== 'Hidden') { %>
+                            <div class="text-3xl font-black text-yellow-300">
+                                <%= job.job_salary %>
+                            </div>
+                        <% } %>
+                    </div>
+                <% } else if (layout === 'neobrutalism') { %>
+                    <div class="border-4 border-black bg-white p-4 shadow-[8px_8px_0px_0px_#000]">
+                        <div class="font-bold text-lg mb-2"><%= job.job_company_name %></div>
+                        <div class="mb-1"><i class="fas fa-map-marker-alt mr-2"></i><%= job.job_location || 'Remote' %></div>
+                        <div class="mb-2"><i class="fas fa-briefcase mr-2"></i><%= job.job_type || 'Full Time' %></div>
+                        <% if (job.job_salary && job.job_salary !== 'Hidden') { %>
+                            <div class="bg-yellow-300 border-2 border-black p-2 font-bold inline-block mt-2">
+                                <%= job.job_salary %>
+                            </div>
+                        <% } %>
+                    </div>
+                <% } else if (layout === 'glass-modern') { %>
+                    <div class="backdrop-blur-lg bg-white/10 border border-white/20 p-4 rounded-2xl">
+                        <div class="flex items-center gap-3 mb-3">
+                            <img src="<%= poster.companyLogo %>" alt="logo" class="w-10 h-10 rounded-xl bg-white p-1">
+                            <div>
+                                <div class="font-bold"><%= job.job_company_name %></div>
+                                <div class="text-sm opacity-80"><%= job.job_location || 'Remote' %> • <%= job.job_type || 'Full Time' %></div>
+                            </div>
+                        </div>
+                        <% if (job.job_salary && job.job_salary !== 'Hidden') { %>
+                            <div class="bg-white/20 backdrop-blur border border-white/30 p-2 rounded-lg font-bold text-center mt-2">
+                                <%= job.job_salary %>
+                            </div>
+                        <% } %>
+                    </div>
+                <% } else { %>
+                    <div class="bg-white/10 backdrop-blur p-4 rounded-xl">
+                        <div class="flex items-center gap-3 mb-2">
+                            <% if (job.job_company_logo) { %>
+                                <img src="<%= job.job_company_logo %>" alt="logo" class="w-10 h-10 rounded-lg bg-white p-1">
+                            <% } %>
+                            <span class="font-bold"><%= job.job_company_name %></span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm opacity-80">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <%= job.job_location || 'Remote' %> • <%= job.job_type || 'Full Time' %>
+                        </div>
+                        <% if (job.job_salary && job.job_salary !== 'Hidden') { %>
+                            <div class="text-xl font-bold mt-2">
+                                <%= job.job_salary %>
+                            </div>
+                        <% } %>
+                    </div>
+                <% } %>
+            </div>
+            
+            <!-- 4. Call to Action -->
+            <div class="order-<%= components.cta %> z-10 mt-4">
+                <% if (layout === 'tiktok-modern') { %>
+                    <div class="bg-[#fe2c55] text-white px-6 py-3 rounded-full font-bold flex items-center gap-2 animate-bounce-custom">
+                        Apply di TikWork <i class="fas fa-arrow-right"></i>
+                    </div>
+                <% } else if (layout === 'cyber-grid') { %>
+                    <button class="border-2 border-green-400 bg-green-400/20 text-green-400 px-6 py-3 font-mono font-bold hover:bg-green-400 hover:text-black transition-colors">
+                        > APPLY_NOW <
+                    </button>
+                <% } else if (layout === 'bold-typography') { %>
+                    <div class="bg-red-500 text-white px-8 py-4 font-black text-xl uppercase transform rotate-1 hover:rotate-0 transition-transform">
+                        APPLY NOW
+                    </div>
+                <% } else if (layout === 'neobrutalism') { %>
+                    <div class="border-4 border-black bg-red-500 text-white px-6 py-3 font-bold transform hover:translate-x-1 hover:translate-y-1 transition-transform shadow-[8px_8px_0px_0px_#000]">
+                        APPLY NOW <i class="fas fa-arrow-down ml-2"></i>
+                    </div>
+                <% } else if (layout === 'glass-modern') { %>
+                    <div class="backdrop-blur-lg bg-white/20 border border-white/30 text-white px-6 py-3 rounded-full font-bold flex items-center gap-2 hover:bg-white/30 transition-colors">
+                        Get Started <i class="fas fa-sparkles"></i>
+                    </div>
+                <% } else { %>
+                    <div class="btn-<%= buttonStyle %> <%= palette.text %> <%= palette.bg.replace('bg-', 'bg-').replace('text-', 'bg-') %>">
+                        Apply Now <i class="fas fa-arrow-down ml-2"></i>
+                    </div>
+                <% } %>
+            </div>
+            
+            <!-- Hashtags for TikTok-style layouts -->
+            <% if (['tiktok-modern', 'cyber-grid', 'glass-modern'].includes(layout)) { %>
+                <div class="flex flex-wrap gap-2 mt-4 text-sm opacity-80">
+                    <span>#<%= (poster && poster.companyHandle) ? poster.companyHandle.replace('@', '') : 'tikwork' %></span>
+                    <span>#hiring</span>
+                    <span>#jobs</span>
+                    <span>#tikwork</span>
+                    <% if (poster && poster.categories) { %>
+                        <% poster.categories.forEach(function(tag) { %>
+                            <span>#<%= String(tag).replace(/\s+/g,'') %></span>
+                        <% }) %>
+                    <% } %>
+                </div>
             <% } %>
-        <% } %>
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #222;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            padding: 0;
-        }
-
-        /* 9:16 Container */
-        .poster-container {
-            width: 100%;
-            max-width: 420px; /* Default desktop view */
-            aspect-ratio: 9/16;
-            background: white;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 0 50px rgba(0,0,0,0.5);
-        }
-
-        /* Mobile Responsiveness */
+            
+        </div>
+    </div>
+    
+    <!-- Mobile Responsiveness -->
+    <style>
         @media (max-width: 768px) {
             body {
                 background-color: #000;
                 align-items: flex-start;
             }
-            .poster-container {
+            .max-w-\[420px\] {
                 max-width: none;
                 width: 100vw;
                 height: 100vh;
@@ -219,852 +362,6 @@
                 box-shadow: none;
             }
         }
-
-        /* --- THEMES --- */
-        
-        /* Modern Theme */
-        .theme-modern {
-            background: var(--modern-bg);
-            color: var(--modern-text);
-        }
-        .theme-modern .logo-area img {
-            border: 2px solid var(--modern-accent);
-            padding: 5px;
-            background: white;
-            border-radius: 12px;
-        }
-        .theme-modern .tag {
-            background: var(--modern-accent);
-            color: white;
-        }
-        .theme-modern .salary-box {
-            background: var(--modern-card);
-            border: 1px solid rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-        }
-
-        /* Professional Theme */
-        .theme-professional {
-            background: var(--prof-bg);
-            color: var(--prof-text);
-        }
-        .theme-professional h1 {
-            font-family: 'Outfit', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .theme-professional .accent-line {
-            width: 60px;
-            height: 4px;
-            background: var(--prof-accent);
-            margin: 20px 0;
-        }
-        .theme-professional .tag {
-            border: 1px solid var(--prof-accent);
-            color: var(--prof-accent);
-            background: transparent;
-        }
-
-        /* Playful Theme */
-        .theme-playful {
-            background: var(--play-bg-grad);
-            color: var(--play-text);
-        }
-        .theme-playful .content-card {
-            background: var(--play-card);
-            margin: 20px;
-            padding: 30px;
-            border-radius: 24px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            height: 80%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        /* Bold Theme */
-        .theme-bold {
-            background: var(--bold-bg);
-            color: var(--bold-text);
-            border: 10px solid var(--bold-card);
-        }
-        .theme-bold h1 {
-            font-size: 3rem;
-            line-height: 0.9;
-            text-transform: uppercase;
-            font-weight: 900;
-            color: transparent;
-            -webkit-text-stroke: 1px white;
-            position: relative;
-            z-index: 1;
-            /* Replaced absolute duplication with text-shadow for multi-line support */
-            text-shadow: 4px 4px 0px var(--bold-accent);
-        }
-        /* Removed .theme-bold h1::after as it breaks multi-line text */
-
-        /* Casual Theme */
-        .theme-casual {
-            background: var(--casual-bg);
-            color: var(--casual-text);
-        }
-        .theme-casual .top-shape {
-            background: var(--casual-accent);
-            height: 200px;
-            border-radius: 0 0 50% 50%;
-            position: absolute;
-            top: 0;
-            width: 100%;
-        }
-
-        /* TikWork Theme - Content First Design */
-        .theme-tikwork {
-            background: var(--tik-grad);
-            color: var(--tik-text);
-            position: relative;
-        }
-        
-        /* Dark overlay for contrast */
-        .tik-backdrop {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.7);
-            z-index: 1;
-        }
-
-        /* Safe Zone Container */
-        .tik-safe-zone {
-            position: relative;
-            z-index: 10;
-            width: 100%;
-            height: 100%;
-            padding: 72px 18px 132px 18px; /* TikTok-ish safe areas */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start; /* Left align text like many TikTok captions */
-        }
-
-        /* Right padding to avoid TikTok UI buttons (Heart, Comment, Share) */
-        .tik-content-area {
-            width: 100%;
-            padding-right: 70px; /* Safe zone for right sidebar buttons */
-        }
-
-        /* Typography Styles */
-        .tik-sticker-hiring {
-            background: #FFFFFF;
-            color: #000000;
-            padding: 8px 16px;
-            font-weight: 800;
-            text-transform: uppercase;
-            font-size: 1.2rem;
-            border-radius: 8px;
-            display: inline-block;
-            margin-bottom: 20px;
-            box-shadow: 4px 4px 0px #00F2EA;
-            transform: rotate(-2deg);
-        }
-
-        .tik-title-large {
-            font-size: inherit; /* controlled by .title-* */
-            font-weight: 900;
-            line-height: 1;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-            text-shadow: 3px 3px 0px #FF0050;
-            background: black;
-            color: white;
-            display: inline;
-            box-decoration-break: clone;
-            -webkit-box-decoration-break: clone;
-            padding: 5px 10px;
-            text-wrap: balance;
-        }
-
-        .tik-info-block {
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(5px);
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            border-left: 4px solid #00F2EA;
-        }
-
-        .tik-company {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-            font-size: 1.2rem;
-            margin-bottom: 5px;
-        }
-        
-        .tik-company img {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: white;
-        }
-
-        .tik-salary {
-            font-size: 2rem;
-            font-weight: 800;
-            color: #00F2EA;
-            margin-top: 10px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-        }
-
-        .tik-location {
-            font-size: 1rem;
-            opacity: 0.9;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .tik-cta-arrow {
-            margin-top: 30px;
-            background: #fe2c55;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-10px);}
-            60% {transform: translateY(-5px);}
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .tik-cta-arrow { animation: none; }
-        }
-
-        /* === TikWork templates (TikTok post styles) === */
-        .tik-ui {
-            position: relative;
-            z-index: 10;
-            height: 100%;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .tik-top-tabs {
-            display: flex;
-            justify-content: center;
-            padding-top: 20px;
-            gap: 20px;
-            font-weight: 800;
-            font-size: 1.05rem;
-            color: rgba(255,255,255,0.6);
-            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-        }
-
-        .tik-tab.active {
-            color: white;
-            border-bottom: 2px solid rgba(255,255,255,0.9);
-            padding-bottom: 2px;
-        }
-
-        .tik-right-sidebar {
-            position: absolute;
-            right: 10px;
-            bottom: 120px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 18px;
-            z-index: 20;
-        }
-
-        .tik-icon-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .tik-avatar-container {
-            position: relative;
-            margin-bottom: 6px;
-        }
-
-        .tik-avatar {
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            border: 2px solid rgba(255,255,255,0.95);
-            background: white;
-            object-fit: contain;
-            padding: 2px;
-        }
-
-        .tik-follow-plus {
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--tik-secondary);
-            color: white;
-            border-radius: 999px;
-            width: 22px;
-            height: 22px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 12px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.35);
-        }
-
-        .tik-icon {
-            font-size: 34px;
-            color: white;
-            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.55));
-        }
-
-        .tik-count {
-            font-size: 12px;
-            font-weight: 700;
-            opacity: 0.95;
-        }
-
-        .tik-bottom-info {
-            padding: 18px;
-            padding-bottom: 34px;
-            max-width: 78%;
-            z-index: 15;
-            position: relative;
-        }
-
-        .tik-username {
-            font-weight: 800;
-            font-size: 1.02rem;
-            margin-bottom: 8px;
-        }
-
-        .tik-description {
-            font-size: 0.98rem;
-            line-height: 1.35;
-            opacity: 0.98;
-        }
-
-        .tik-hashtags {
-            margin-top: 10px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .tik-hashtag {
-            font-weight: 800;
-            font-size: 0.9rem;
-            opacity: 0.98;
-        }
-
-        .tik-salary-sticker {
-            background: rgba(255, 255, 255, 0.18);
-            backdrop-filter: blur(6px);
-            padding: 6px 10px;
-            border-radius: 10px;
-            font-weight: 900;
-            color: var(--tik-accent);
-            display: inline-block;
-            margin-bottom: 8px;
-            border: 1px solid rgba(255,255,255,0.15);
-        }
-
-        .tik-mini-card {
-            margin-top: 12px;
-            background: rgba(0,0,0,0.45);
-            border: 1px solid rgba(255,255,255,0.10);
-            border-radius: 14px;
-            padding: 12px;
-            backdrop-filter: blur(8px);
-        }
-
-        .tik-mini-row {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            opacity: 0.95;
-            font-size: 0.95rem;
-        }
-
-        .tik-duet {
-            position: relative;
-            z-index: 10;
-            height: 100%;
-            display: grid;
-            grid-template-columns: 1fr;
-        }
-
-        .tik-duet .panel {
-            padding: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .tik-duet .panel-left {
-            min-height: 45%;
-            background: radial-gradient(circle at 40% 25%, rgba(255,0,80,0.55), rgba(0,242,234,0.15) 55%, rgba(0,0,0,0.9) 100%);
-        }
-
-        .tik-duet .panel-right {
-            background: rgba(0,0,0,0.55);
-            backdrop-filter: blur(10px);
-        }
-
-        @media (min-width: 480px) {
-            .tik-duet {
-                grid-template-columns: 1fr 1fr;
-            }
-            .tik-duet .panel-left, .tik-duet .panel-right {
-                min-height: 100%;
-            }
-        }
-
-        .tik-caption {
-            position: relative;
-            z-index: 10;
-            height: 100%;
-            padding: 18px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-        }
-
-        .tik-caption .caption-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(0,0,0,0.55);
-            border: 1px solid rgba(255,255,255,0.12);
-            border-radius: 999px;
-            padding: 10px 14px;
-            width: fit-content;
-            max-width: calc(100% - 80px);
-            backdrop-filter: blur(10px);
-        }
-
-        .tik-caption .caption-title {
-            margin-top: 12px;
-        }
-
-        .tik-minimal {
-            position: relative;
-            z-index: 10;
-            height: 100%;
-            padding: 18px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .tik-minimal .frame {
-            background: rgba(0,0,0,0.55);
-            border: 1px solid rgba(255,255,255,0.12);
-            border-radius: 22px;
-            padding: 18px;
-            backdrop-filter: blur(10px);
-        }
-
-        /* --- LAYOUT UTILS --- */
-        .layout-padding {
-            padding: 40px 30px;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            z-index: 10;
-        }
-        
-        .header {
-            text-align: center;
-        }
-
-        .logo {
-            width: 100px;
-            height: 100px;
-            object-fit: contain;
-            border-radius: 20px;
-            margin-bottom: 20px;
-            background: white;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .company-name {
-            font-size: 1.2rem;
-            font-weight: 600;
-            opacity: 0.9;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .job-title {
-            font-size: 2.2rem;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 15px;
-            word-wrap: break-word;
-        }
-
-        .meta-grid {
-            display: grid;
-            gap: 15px;
-            margin: 30px 0;
-        }
-
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.1rem;
-        }
-
-        .salary-badge {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin: 20px 0;
-            padding: 10px 20px;
-            border-radius: 50px;
-            display: inline-block;
-            text-align: center;
-        }
-
-        .footer {
-            text-align: center;
-            opacity: 0.7;
-            font-size: 0.9rem;
-            margin-top: auto;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 20px;
-        }
-
-        .tags-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: center;
-            margin-top: 10px;
-        }
-
-        .tag {
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
     </style>
-</head>
-<body>
-    <% const theme = config.theme; %>
-    <% const pattern = config.pattern || 'none'; %>
-    <% const font = config.font || 'default'; %>
-    <% const layout = config.layout || 'default'; %>
-    <% const align = config.align || 'left'; %>
-    <% const density = config.density || 'high'; %>
-    <% const template = config.template || 'sticker'; %>
-    
-    <% const components = config.components || { badge: 1, title: 2, info: 3, cta: 4 }; %>
-    <% const titleLength = config.titleLength || 'medium'; %>
-    
-    <div class="poster-container theme-<%= theme %> pattern-<%= pattern %> font-<%= font %>">
-        
-        <!-- === TIKWORK THEME LAYOUT (Updated) === -->
-        <% if (theme === 'tikwork') { %>
-            <div class="tik-backdrop"></div>
-            
-            <% const companyLogo = job.job_company_logo || ('https://ui-avatars.com/api/?name=' + encodeURIComponent(job.job_company_name || 'TikWork')); %>
-            <% const hashtags = (poster && poster.categories ? poster.categories : []).slice(0,3); %>
-
-            <% if (template === 'ui') { %>
-                <!-- "UI" = komposisi ala konten TikTok (bukan UI app) -->
-                <div class="tik-safe-zone text-<%= align %> layout-<%= layout %>">
-                    <div class="tik-content-area" style="display:flex; flex-direction:column; align-items:inherit;">
-                        <div class="tik-sticker-hiring order-<%= components.badge %>"
-                             style="color: var(--tik-text); background: var(--tik-secondary); box-shadow: 4px 4px 0px var(--tik-accent); margin-bottom:16px;">
-                            <span style="opacity:0.8;">#hiring</span> • TIKWORK
-                        </div>
-
-                        <div class="order-<%= components.title %>">
-                            <h1 class="tik-title-large title-<%= titleLength %>"
-                                style="background: rgba(0,0,0,0.7); color:#fff; border-radius:12px;">
-                                <%= job.job_title %>
-                            </h1>
-                        </div>
-
-                        <div class="tik-info-block order-<%= components.info %>" style="margin-top:18px; border-left-color:var(--tik-accent);">
-                            <div class="tik-company">
-                                <img src="<%= companyLogo %>" alt="logo">
-                                <%= job.job_company_name %>
-                            </div>
-                            <div class="tik-location">
-                                <i class="fas fa-map-marker-alt" style="color:var(--tik-secondary);"></i>
-                                <%= job.job_location || 'Remote' %> • <%= job.job_type || 'Full Time' %>
-                            </div>
-                            <% if (job.job_salary && job.job_salary !== 'Hidden' && (density === 'high' || density === 'medium')) { %>
-                                <div class="tik-salary" style="margin-top:8px; color:var(--tik-accent);">
-                                    <%= job.job_salary %>
-                                </div>
-                            <% } %>
-                        </div>
-
-                        <div class="tik-hashtags" style="margin-top:14px;">
-                            <span class="tik-hashtag"><%= (poster && poster.companyHandle) ? poster.companyHandle : '@tikwork' %></span>
-                            <span class="tik-hashtag">#hiring</span>
-                            <span class="tik-hashtag">#tikwork</span>
-                            <% hashtags.forEach(function(tag) { %>
-                                <span class="tik-hashtag">#<%= String(tag).replace(/\s+/g,'') %></span>
-                            <% }) %>
-                        </div>
-
-                        <div class="tik-cta-arrow order-<%= components.cta %>"
-                             style="background: var(--tik-secondary); color: var(--tik-text); margin-top:24px;">
-                            Apply di TikWork <i class="fas fa-arrow-right"></i>
-                        </div>
-                    </div>
-                </div>
-
-            <% } else if (template === 'duet') { %>
-                <div class="tik-duet">
-                    <div class="panel panel-left">
-                        <div style="text-align: left; width: 100%; padding-right: 60px;">
-                            <div class="tik-sticker-hiring" style="background: var(--tik-secondary); box-shadow: 4px 4px 0px var(--tik-accent);">
-                                NOW HIRING
-                            </div>
-                            <h1 class="tik-title-large title-<%= titleLength %>" style="background: rgba(0,0,0,0.65); color: #fff;">
-                                <%= job.job_title %>
-                            </h1>
-                        </div>
-                    </div>
-                    <div class="panel panel-right">
-                        <div style="width: 100%;">
-                            <div class="tik-mini-card" style="max-width: 520px; margin: 0 auto;">
-                                <div class="tik-mini-row"><img src="<%= companyLogo %>" alt="Logo" style="width: 36px; height: 36px; border-radius: 10px; background:#fff; padding:2px;"> <strong style="font-size: 1.05rem;"><%= job.job_company_name %></strong></div>
-                                <div class="tik-mini-row" style="margin-top: 10px;"><i class="fas fa-map-marker-alt" style="color: var(--tik-secondary);"></i> <%= job.job_location || 'Remote' %></div>
-                                <div class="tik-mini-row" style="margin-top: 6px;"><i class="fas fa-briefcase" style="color: var(--tik-accent);"></i> <%= job.job_type || 'Full Time' %></div>
-                                <% if (job.job_salary && job.job_salary !== 'Hidden' && (density === 'high' || density === 'medium')) { %>
-                                    <div class="tik-mini-row" style="margin-top: 10px;"><span class="tik-salary-sticker"><%= job.job_salary %></span></div>
-                                <% } %>
-                                <div style="margin-top: 14px;">
-                                    <div class="tik-cta-arrow" style="margin-top: 0; background: var(--tik-secondary);">
-                                        Apply via TikWork <i class="fas fa-arrow-right"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tik-hashtags" style="margin-top: 14px; padding-right: 60px;">
-                                <span class="tik-hashtag">#tikwork</span>
-                                <span class="tik-hashtag">#hiring</span>
-                                <% hashtags.forEach(function(tag) { %>
-                                    <span class="tik-hashtag">#<%= String(tag).replace(/\s+/g,'') %></span>
-                                <% }) %>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            <% } else if (template === 'caption') { %>
-                <div class="tik-caption">
-                    <div class="caption-pill">
-                        <img src="<%= companyLogo %>" alt="Logo" style="width: 22px; height: 22px; border-radius: 6px; background:#fff; padding:1px;">
-                        <strong><%= job.job_company_name %></strong>
-                        <span style="opacity: 0.8;">•</span>
-                        <span><%= job.job_location || 'Remote' %></span>
-                    </div>
-                    <div class="caption-title">
-                        <h1 class="tik-title-large title-<%= titleLength %>" style="background: rgba(0,0,0,0.55); color: #fff;">
-                            <%= job.job_title %>
-                        </h1>
-                    </div>
-                    <% if (job.job_salary && job.job_salary !== 'Hidden' && density === 'high') { %>
-                        <div style="margin-top: 10px;">
-                            <span class="tik-salary-sticker"><%= job.job_salary %></span>
-                        </div>
-                    <% } %>
-                    <div class="tik-hashtags" style="padding-right: 70px;">
-                        <span class="tik-hashtag"><%= (poster && poster.companyHandle) ? poster.companyHandle : '@tikwork' %></span>
-                        <span class="tik-hashtag">#hiring</span>
-                        <span class="tik-hashtag">#jobs</span>
-                        <span class="tik-hashtag">#tikwork</span>
-                        <% hashtags.forEach(function(tag) { %>
-                            <span class="tik-hashtag">#<%= String(tag).replace(/\s+/g,'') %></span>
-                        <% }) %>
-                    </div>
-                    <div style="margin-top: 16px; padding-right: 70px;">
-                        <div class="tik-cta-arrow" style="margin-top: 0; background: var(--tik-secondary);">
-                            Apply now <i class="fas fa-arrow-right"></i>
-                        </div>
-                    </div>
-                </div>
-
-            <% } else if (template === 'minimal') { %>
-                <div class="tik-minimal">
-                    <div class="frame" style="padding-right: 70px;">
-                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-                            <img src="<%= companyLogo %>" alt="Logo" style="width: 46px; height: 46px; border-radius: 14px; background:#fff; padding:2px;">
-                            <div style="display:flex; flex-direction:column;">
-                                <strong style="font-size: 1.05rem;"><%= job.job_company_name %></strong>
-                                <span style="opacity: 0.85; font-weight: 600; font-size: 0.95rem;"><%= job.job_location || 'Remote' %> • <%= job.job_type || 'Full Time' %></span>
-                            </div>
-                        </div>
-                        <h1 class="tik-title-large title-<%= titleLength %>" style="background: transparent; padding: 0; text-shadow: 2px 2px 0px var(--tik-secondary);">
-                            <%= job.job_title %>
-                        </h1>
-                        <% if (job.job_salary && job.job_salary !== 'Hidden' && (density === 'high' || density === 'medium')) { %>
-                            <div style="margin-top: 10px;"><span class="tik-salary-sticker"><%= job.job_salary %></span></div>
-                        <% } %>
-                        <div class="tik-hashtags" style="margin-top: 14px;">
-                            <span class="tik-hashtag">#tikwork</span>
-                            <span class="tik-hashtag">#hiring</span>
-                            <% hashtags.forEach(function(tag) { %>
-                                <span class="tik-hashtag">#<%= String(tag).replace(/\s+/g,'') %></span>
-                            <% }) %>
-                        </div>
-                        <div style="margin-top: 16px;">
-                            <div class="tik-cta-arrow" style="margin-top: 0; background: var(--tik-secondary);">
-                                Open in TikWork <i class="fas fa-arrow-right"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            <% } else { %>
-                <div class="tik-safe-zone text-<%= align %> layout-<%= layout %>">
-                    <div class="tik-content-area" style="display: flex; flex-direction: column; align-items: inherit;">
-                        
-                        <!-- 1. Sticker Badge -->
-                        <div class="tik-sticker-hiring order-<%= components.badge %>" 
-                             style="color: var(--tik-text); background: var(--tik-secondary); box-shadow: 4px 4px 0px var(--tik-accent);">
-                            WE ARE HIRING
-                        </div>
-
-                        <!-- 2. Job Title -->
-                        <div class="order-<%= components.title %>">
-                            <h1 class="tik-title-large title-<%= titleLength %>" style="background: var(--tik-text); color: var(--tik-bg); text-shadow: 3px 3px 0px var(--tik-secondary);">
-                                <%= job.job_title %>
-                            </h1>
-                        </div>
-
-                        <!-- 3. Info Block -->
-                        <div class="tik-info-block order-<%= components.info %>" style="border-left-color: var(--tik-accent);">
-                            <div class="tik-company">
-                                <% if (job.job_company_logo) { %>
-                                    <img src="<%= job.job_company_logo %>" alt="logo">
-                                <% } %>
-                                <%= job.job_company_name %>
-                            </div>
-                            
-                            <% if (density === 'high' || density === 'medium') { %>
-                                <div class="tik-location">
-                                    <i class="fas fa-map-marker-alt" style="color: var(--tik-secondary);"></i>
-                                    <%= job.job_location || 'Remote' %> • <%= job.job_type || 'Full Time' %>
-                                </div>
-                            <% } %>
-
-                            <% if ((density === 'high') && job.job_salary && job.job_salary !== 'Hidden') { %>
-                                <div class="tik-salary" style="color: var(--tik-accent);">
-                                    <%= job.job_salary %>
-                                </div>
-                            <% } %>
-
-                            <% if (density === 'high' || density === 'medium') { %>
-                                <div class="tik-hashtags" style="margin-top: 12px;">
-                                    <span class="tik-hashtag">#tikwork</span>
-                                    <span class="tik-hashtag">#hiring</span>
-                                    <% hashtags.forEach(function(tag) { %>
-                                        <span class="tik-hashtag">#<%= String(tag).replace(/\s+/g,'') %></span>
-                                    <% }) %>
-                                </div>
-                            <% } %>
-                        </div>
-
-                        <!-- 4. CTA -->
-                        <div class="tik-cta-arrow order-<%= components.cta %>" style="background: var(--tik-secondary); color: var(--tik-text);">
-                            Apply Now <i class="fas fa-arrow-down"></i>
-                        </div>
-
-                    </div>
-                </div>
-            <% } %>
-
-        <!-- === OTHER THEMES LAYOUT === -->
-        <% } else { %>
-            
-            <!-- Background Elements for specific themes -->
-            <% if (theme === 'casual') { %>
-                <div class="top-shape"></div>
-            <% } %>
-
-            <div class="<%= theme === 'playful' ? 'content-card' : 'layout-padding' %>">
-                
-                <div class="header">
-                    <% if (job.job_company_logo) { %>
-                        <div class="logo-area">
-                            <img src="<%= job.job_company_logo %>" alt="Logo" class="logo">
-                        </div>
-                    <% } %>
-                    <div class="company-name"><%= job.job_company_name %></div>
-                </div>
-
-                <div class="main-content" style="text-align: center;">
-                    <% if (theme === 'bold') { %>
-                        <h1 class="job-title" data-text="<%= job.job_title %>"><%= job.job_title %></h1>
-                    <% } else { %>
-                        <h1 class="job-title"><%= job.job_title %></h1>
-                    <% } %>
-
-                    <% if (theme === 'professional') { %>
-                        <div style="display: flex; justify-content: center;"><div class="accent-line"></div></div>
-                    <% } %>
-
-                    <!-- Location -->
-                    <div class="meta-item" style="justify-content: center; opacity: 0.8;">
-                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                        <%= job.job_location || 'Remote / Flexible' %>
-                    </div>
-
-                    <!-- Salary -->
-                    <% if (job.job_salary && job.job_salary !== 'Hidden') { %>
-                        <div class="salary-box">
-                            <div class="salary-badge">
-                                <% if (job.job_salary !== 'N/A') { %>
-                                    <%= job.job_salary %>
-                                <% } else { %>
-                                     <%= job.job_description %>
-                                <% } %>  
-                                
-                            </div>
-                        </div>
-                    <% } %>
-                    
-                    <!-- Metadata items -->
-                    <div class="tags-container">
-                        <span class="tag"><%= job.job_type || 'Full Time' %></span>
-                        <% if (job.job_source) { %>
-                            <span class="tag">Via <%= job.job_source %></span>
-                        <% } %>
-                    </div>
-
-                </div>
-
-                <div class="footer">
-                    <p>Apply now at</p>
-                    <h3 style="margin-top: 5px;">TIKWORK</h3>
-                </div>
-            </div>
-        <% } %>
-    </div>
 </body>
 </html>
