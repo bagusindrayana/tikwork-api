@@ -1,243 +1,195 @@
 class PosterService {
+
+  static THEMES = [
+    {
+      name: 'glassmorphism',
+      badgeText: 'WE ARE HIRING',
+      ctaLabel: 'Apply Now',
+      font: "'Plus Jakarta Sans', sans-serif",
+      palettes: [
+        { bg1: '#7c3aed', bg2: '#2563eb', text: '#fff', textSub: 'rgba(255,255,255,0.8)', accent: '#a78bfa', ctaBg: '#a78bfa', ctaText: '#1e1b4b' },
+        { bg1: '#ec4899', bg2: '#8b5cf6', text: '#fff', textSub: 'rgba(255,255,255,0.8)', accent: '#f9a8d4', ctaBg: '#f9a8d4', ctaText: '#831843' },
+        { bg1: '#0891b2', bg2: '#1e3a8a', text: '#fff', textSub: 'rgba(255,255,255,0.8)', accent: '#22d3ee', ctaBg: '#22d3ee', ctaText: '#164e63' },
+        { bg1: '#059669', bg2: '#065f46', text: '#fff', textSub: 'rgba(255,255,255,0.8)', accent: '#6ee7b7', ctaBg: '#6ee7b7', ctaText: '#064e3b' },
+      ],
+      show: { badge: true, logo: true, companyName: true, location: true, salary: true, tags: true, hashtags: true },
+    },
+    {
+      name: 'neobrutalism',
+      badgeText: 'NOW HIRING!',
+      ctaLabel: 'APPLY NOW →',
+      font: "'Inter', sans-serif",
+      palettes: [
+        { bg1: '#facc15', bg2: '#fbbf24', text: '#000', textSub: 'rgba(0,0,0,0.7)', accent: '#ef4444', ctaBg: '#ef4444', ctaText: '#fff' },
+        { bg1: '#a3e635', bg2: '#84cc16', text: '#000', textSub: 'rgba(0,0,0,0.7)', accent: '#3b82f6', ctaBg: '#3b82f6', ctaText: '#fff' },
+        { bg1: '#fb923c', bg2: '#f97316', text: '#000', textSub: 'rgba(0,0,0,0.7)', accent: '#7c3aed', ctaBg: '#7c3aed', ctaText: '#fff' },
+        { bg1: '#f472b6', bg2: '#ec4899', text: '#000', textSub: 'rgba(0,0,0,0.7)', accent: '#000', ctaBg: '#000', ctaText: '#f472b6' },
+      ],
+      show: { badge: true, logo: false, companyName: true, location: true, salary: true, tags: true, hashtags: false },
+    },
+    {
+      name: 'minimalist',
+      badgeText: 'Open Position',
+      ctaLabel: 'Learn More',
+      font: "'Inter', sans-serif",
+      palettes: [
+        { bg1: '#fafaf9', bg2: '#f5f5f4', text: '#1c1917', textSub: 'rgba(28,25,23,0.5)', accent: '#d97706', ctaBg: '#1c1917', ctaText: '#fafaf9' },
+        { bg1: '#faf5ff', bg2: '#f3e8ff', text: '#1e1b4b', textSub: 'rgba(30,27,75,0.5)', accent: '#7c3aed', ctaBg: '#1e1b4b', ctaText: '#faf5ff' },
+        { bg1: '#f0fdf4', bg2: '#ecfdf5', text: '#14532d', textSub: 'rgba(20,83,45,0.5)', accent: '#16a34a', ctaBg: '#14532d', ctaText: '#f0fdf4' },
+      ],
+      show: { badge: true, logo: true, companyName: true, location: true, salary: true, tags: false, hashtags: false },
+    },
+    {
+      name: 'retro',
+      badgeText: '> HIRING_ACTIVE',
+      ctaLabel: '> EXECUTE_APPLY <',
+      font: "'Courier New', monospace",
+      palettes: [
+        { bg1: '#0a0a0a', bg2: '#0f0f0f', text: '#00ff41', textSub: 'rgba(0,255,65,0.55)', accent: '#00ff41', ctaBg: '#00ff41', ctaText: '#0a0a0a' },
+        { bg1: '#0a0a0a', bg2: '#0f0f0f', text: '#ffb000', textSub: 'rgba(255,176,0,0.55)', accent: '#ffb000', ctaBg: '#ffb000', ctaText: '#0a0a0a' },
+        { bg1: '#0a0a0a', bg2: '#0f0f0f', text: '#00d4ff', textSub: 'rgba(0,212,255,0.55)', accent: '#00d4ff', ctaBg: '#00d4ff', ctaText: '#0a0a0a' },
+      ],
+      show: { badge: true, logo: false, companyName: true, location: true, salary: true, tags: false, hashtags: false },
+    },
+    {
+      name: 'pastel',
+      badgeText: '✨ Hiring',
+      ctaLabel: 'Apply Now ✦',
+      font: "'Plus Jakarta Sans', sans-serif",
+      palettes: [
+        { bg1: '#fce7f3', bg2: '#ddd6fe', text: '#4c1d95', textSub: 'rgba(76,29,149,0.6)', accent: '#a78bfa', ctaBg: '#8b5cf6', ctaText: '#fff' },
+        { bg1: '#cffafe', bg2: '#bfdbfe', text: '#1e3a5f', textSub: 'rgba(30,58,95,0.6)', accent: '#38bdf8', ctaBg: '#0284c7', ctaText: '#fff' },
+        { bg1: '#d9f99d', bg2: '#bbf7d0', text: '#14532d', textSub: 'rgba(20,83,45,0.6)', accent: '#22c55e', ctaBg: '#16a34a', ctaText: '#fff' },
+        { bg1: '#fef3c7', bg2: '#fde68a', text: '#78350f', textSub: 'rgba(120,53,15,0.6)', accent: '#f59e0b', ctaBg: '#d97706', ctaText: '#fff' },
+      ],
+      show: { badge: true, logo: true, companyName: true, location: true, salary: true, tags: true, hashtags: true },
+    },
+    {
+      name: 'monochrome',
+      badgeText: 'HIRING',
+      ctaLabel: 'APPLY',
+      font: "'Inter', sans-serif",
+      palettes: [
+        { bg1: '#000', bg2: '#0a0a0a', text: '#fff', textSub: 'rgba(255,255,255,0.55)', accent: '#fff', ctaBg: '#fff', ctaText: '#000' },
+        { bg1: '#fff', bg2: '#fafafa', text: '#000', textSub: 'rgba(0,0,0,0.5)', accent: '#000', ctaBg: '#000', ctaText: '#fff' },
+      ],
+      show: { badge: true, logo: false, companyName: true, location: true, salary: false, tags: false, hashtags: false },
+    },
+    {
+      name: 'compact',
+      badgeText: 'JOB VACANCY',
+      ctaLabel: 'Apply Now',
+      font: "'Inter', sans-serif",
+      palettes: [
+        { bg1: '#1e293b', bg2: '#0f172a', text: '#e2e8f0', textSub: 'rgba(226,232,240,0.65)', accent: '#3b82f6', ctaBg: '#3b82f6', ctaText: '#fff' },
+        { bg1: '#fafaf9', bg2: '#f5f5f4', text: '#292524', textSub: 'rgba(41,37,36,0.6)', accent: '#ef4444', ctaBg: '#ef4444', ctaText: '#fff' },
+        { bg1: '#1a1a2e', bg2: '#16213e', text: '#e0e7ff', textSub: 'rgba(224,231,255,0.65)', accent: '#eab308', ctaBg: '#eab308', ctaText: '#1a1a2e' },
+      ],
+      show: { badge: true, logo: true, companyName: true, location: true, salary: true, tags: true, hashtags: false },
+    },
+    {
+      name: 'bold-type',
+      badgeText: 'WE ARE HIRING',
+      ctaLabel: 'APPLY NOW',
+      font: "'Inter', sans-serif",
+      palettes: [
+        { bg1: '#dc2626', bg2: '#991b1b', text: '#fff', textSub: 'rgba(255,255,255,0.8)', accent: '#fef2f2', ctaBg: '#fff', ctaText: '#dc2626' },
+        { bg1: '#2563eb', bg2: '#1d4ed8', text: '#fff', textSub: 'rgba(255,255,255,0.8)', accent: '#dbeafe', ctaBg: '#fff', ctaText: '#2563eb' },
+        { bg1: '#000', bg2: '#18181b', text: '#ccff00', textSub: 'rgba(204,255,0,0.65)', accent: '#ccff00', ctaBg: '#ccff00', ctaText: '#000' },
+      ],
+      show: { badge: true, logo: false, companyName: true, location: true, salary: false, tags: false, hashtags: false },
+    },
+    {
+      name: 'corporate',
+      badgeText: 'Career Opportunity',
+      ctaLabel: 'Apply Now',
+      font: "'Inter', sans-serif",
+      palettes: [
+        { bg1: '#0f172a', bg2: '#020617', text: '#e2e8f0', textSub: 'rgba(226,232,240,0.6)', accent: '#38bdf8', ctaBg: '#0ea5e9', ctaText: '#fff' },
+        { bg1: '#1e3a5f', bg2: '#0c1929', text: '#f0f9ff', textSub: 'rgba(240,249,255,0.65)', accent: '#fbbf24', ctaBg: '#f59e0b', ctaText: '#1e3a5f' },
+        { bg1: '#312e81', bg2: '#1e1b4b', text: '#e0e7ff', textSub: 'rgba(224,231,255,0.65)', accent: '#818cf8', ctaBg: '#6366f1', ctaText: '#fff' },
+      ],
+      show: { badge: true, logo: true, companyName: true, location: true, salary: true, tags: true, hashtags: false },
+    },
+    {
+      name: 'magazine',
+      badgeText: 'NOW HIRING',
+      ctaLabel: 'Read More →',
+      font: "'Georgia', serif",
+      palettes: [
+        { bg1: '#fefce8', bg2: '#fef9c3', text: '#1c1917', textSub: 'rgba(28,25,23,0.55)', accent: '#dc2626', ctaBg: '#dc2626', ctaText: '#fff' },
+        { bg1: '#fff1f2', bg2: '#ffe4e6', text: '#1c1917', textSub: 'rgba(28,25,23,0.55)', accent: '#be123c', ctaBg: '#be123c', ctaText: '#fff' },
+        { bg1: '#eff6ff', bg2: '#dbeafe', text: '#1e3a5f', textSub: 'rgba(30,58,95,0.55)', accent: '#2563eb', ctaBg: '#2563eb', ctaText: '#fff' },
+      ],
+      show: { badge: true, logo: true, companyName: true, location: true, salary: true, tags: false, hashtags: false },
+    },
+    {
+      name: 'sci-fi',
+      badgeText: '◆ RECRUITING',
+      ctaLabel: '[ INITIATE ]',
+      font: "'Courier New', monospace",
+      palettes: [
+        { bg1: '#030712', bg2: '#0f172a', text: '#00f2ea', textSub: 'rgba(0,242,234,0.55)', accent: '#00f2ea', ctaBg: 'transparent', ctaText: '#00f2ea' },
+        { bg1: '#030712', bg2: '#0f172a', text: '#e879f9', textSub: 'rgba(232,121,249,0.55)', accent: '#e879f9', ctaBg: 'transparent', ctaText: '#e879f9' },
+        { bg1: '#030712', bg2: '#0f172a', text: '#fb923c', textSub: 'rgba(251,146,60,0.55)', accent: '#fb923c', ctaBg: 'transparent', ctaText: '#fb923c' },
+      ],
+      show: { badge: true, logo: false, companyName: true, location: true, salary: true, tags: true, hashtags: false },
+    },
+    {
+      name: 'social',
+      badgeText: '#hiring • TIKWORK',
+      ctaLabel: 'Apply di TikWork',
+      font: "'Plus Jakarta Sans', sans-serif",
+      palettes: [
+        { bg1: '#0f172a', bg2: '#1e293b', text: '#f8fafc', textSub: 'rgba(248,250,252,0.65)', accent: '#fe2c55', ctaBg: '#fe2c55', ctaText: '#fff' },
+        { bg1: '#000', bg2: '#18181b', text: '#fff', textSub: 'rgba(255,255,255,0.65)', accent: '#00f2ea', ctaBg: '#00f2ea', ctaText: '#000' },
+      ],
+      show: { badge: true, logo: true, companyName: true, location: true, salary: true, tags: true, hashtags: true },
+    },
+  ];
+
   /**
-   * Generate poster configuration using seeded randomness
-   * @param {Object} job - Job vacancy data
-   * @param {Object} options - Customization options
-   * @returns {Object} Configuration object
+   * Generate poster configuration
    */
   static generateConfig(job, options = {}) {
-    // Use job ID or unique string to seed the random generator for consistency
     const seed = this.getSeededRandom(job.job_id || job.id || 'default');
-    
-    // Set seed for consistent random generation
-    this.setSeed(seed);
 
-    // 1. Color Palettes (Backgrounds & Text) - Tailwind classes
-    const palettes = [
-      { 
-        bg: 'bg-gradient-to-br from-purple-600 to-blue-600', 
-        text: 'text-white', 
-        accent: 'bg-white/20',
-        name: 'purple-blue'
-      },
-      { 
-        bg: 'bg-gradient-to-tr from-emerald-500 to-teal-900', 
-        text: 'text-white', 
-        accent: 'bg-emerald-800/30',
-        name: 'emerald-teal'
-      },
-      { 
-        bg: 'bg-gradient-to-bl from-rose-500 to-orange-400', 
-        text: 'text-white', 
-        accent: 'bg-white/20',
-        name: 'rose-orange'
-      },
-      { 
-        bg: 'bg-gray-900', 
-        text: 'text-white', 
-        accent: 'bg-gray-800',
-        name: 'dark'
-      },
-      { 
-        bg: 'bg-blue-900', 
-        text: 'text-blue-50', 
-        accent: 'bg-blue-800',
-        name: 'navy'
-      },
-      { 
-        bg: 'bg-[#F4D03F]', 
-        text: 'text-black', 
-        accent: 'bg-black/10',
-        name: 'yellow'
-      },
-      { 
-        bg: 'bg-[#E74C3C]', 
-        text: 'text-white', 
-        accent: 'bg-white/20',
-        name: 'red'
-      },
-      { 
-        bg: 'bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900', 
-        text: 'text-gray-100', 
-        accent: 'bg-purple-500/20',
-        name: 'tiktok-dark'
-      },
-      { 
-        bg: 'bg-gradient-to-b from-teal-900 via-gray-900 to-rose-900', 
-        text: 'text-white', 
-        accent: 'bg-gray-800',
-        name: 'teal-rose'
-      },
-      { 
-        bg: 'bg-[#FFDEE9] bg-gradient-to-b from-[#FFDEE9] to-[#B5FFFC]', 
-        text: 'text-slate-800', 
-        accent: 'bg-white/50',
-        name: 'pink-blue-pastel'
-      },
-      { 
-        bg: 'bg-[#D9AFD9] bg-gradient-to-tr from-[#D9AFD9] to-[#97D9E1]', 
-        text: 'text-slate-900', 
-        accent: 'bg-white/40',
-        name: 'purple-blue-pastel'
-      },
-      { 
-        bg: 'bg-[#FDFBF7]', 
-        text: 'text-stone-800', 
-        accent: 'bg-stone-200',
-        name: 'minimalist-cream'
-      },
-      { 
-        bg: 'bg-black', 
-        text: 'text-[#CCFF00]', 
-        accent: 'bg-[#CCFF00]/20',
-        name: 'cyber-acid'
-      },
-      { 
-        bg: 'bg-[#FF0050]', 
-        text: 'text-white', 
-        accent: 'bg-black/20',
-        name: 'tiktok-red'
-      },
-      { 
-        bg: 'bg-[#0000FF]', 
-        text: 'text-white', 
-        accent: 'bg-white/20',
-        name: 'pure-blue'
-      },
-      { 
-        bg: 'bg-orange-500', 
-        text: 'text-black', 
-        accent: 'bg-black/10',
-        name: 'orange'
-      }
-    ];
+    // Select theme (overridable via query param)
+    let theme;
+    if (options.theme) {
+      theme = this.THEMES.find(t => t.name === options.theme);
+    }
+    if (!theme) {
+      theme = this.THEMES[seed % this.THEMES.length];
+    }
 
-    const palette = this.pickFromArray(palettes, seed, 0);
+    // Select palette within theme
+    const palette = this.pickFromArray(theme.palettes, seed, 3);
 
-    // 2. Patterns (Overlay styles)
-    const patterns = [
-      'none',
-      'radial-dots',     // radial-gradient
-      'grid-lines',      // repeating-linear-gradient
-      'noise',           // noisy texture
-      'circles',         // large circles
-      'diagonal-stripes',
-      'zigzag',
-      'polka-pop',
-      'waves',
-      'isometric',
-      'checkerboard'
-    ];
-    
-    const pattern = this.pickFromArray(patterns, seed, 1);
-
-    // 3. Fonts
-    const fonts = [
-      'font-sans',           // Inter (Default)
-      'font-serif',          // Playfair Display
-      'font-mono',           // Space Mono
-      'font-oswald',         // Oswald
-      'font-comic',          // Comic Sans (Meme)
-      'font-retro',          // Retro/Pixel
-      'font-display-heavy'   // Impact-like
-    ];
-    
-    const font = this.pickFromArray(fonts, seed, 2);
-
-    // 4. Layouts
-    const layouts = [
-      'centered',        // Everything center aligned nicely
-      'left-aligned',    // Classic left align
-      'card-center',     // Floating card in center
-      'split-vertical',  // Logo top, content bottom massive
-      'minimalist',      // Very small text, lots of whitespace
-      'tiktok-modern',   // New Glitch/Neon layout
-      'modern-split',    // High contrast split screen
-      'cyber-grid',      // Terminal aesthetic
-      'bold-typography', // Massive text focus
-      'neobrutalism',    // Brutalist borders, high contrast
-      'glass-modern',    // Glassmorphism
-      'meme-design'      // Chaotic "Design is my passion"
-    ];
-    
-    const layout = this.pickFromArray(layouts, seed, 3);
-
-    // 5. Button Styles
-    const buttonStyles = [
-      'solid-pill',      // Classic rounded full color
-      'outline-neon',    // Transparent with glowing border
-      'glass',           // Backdrop blur white/glass
-      'brutalist',       // Sharp corners, heavy shadow
-      'gradient-shine',  // Gradient background
-      'retro-windows',   // Windows 95 style
-      'pixel-art'        // Pixelated borders
-    ];
-    
-    const buttonStyle = this.pickFromArray(buttonStyles, seed, 4);
-
-    // 6. Decorative Elements
-    const decorations = [
-      'none',
-      'watermark-logo',  // Huge logo in background
-      'shapes-corner',   // Abstract blobs
-      'line-separator',  // Lines between elements
-      'border-frame'     // Border around content
-    ];
-    
-    const decoration = this.pickFromArray(decorations, seed, 5);
-
-    // Title Length Calculation
-    let titleLength = 'medium';
+    // Title length calculation
     const titleLen = job.job_title ? job.job_title.length : 0;
+    let titleLength = 'medium';
     if (titleLen < 15) titleLength = 'short';
     else if (titleLen > 40) titleLength = 'super-long';
     else if (titleLen > 25) titleLength = 'long';
-    else titleLength = 'medium';
-
-    // Component ordering using seed
-    const components = this.shuffleComponents(seed);
 
     return {
+      theme: theme.name,
       palette,
-      pattern,
-      font,
-      layout,
-      decoration,
-      buttonStyle,
+      font: theme.font,
+      show: theme.show,
+      badgeText: theme.badgeText,
+      ctaLabel: theme.ctaLabel,
+      layout: options.layout || ['default', 'centered', 'spotlight', 'modern'][seed % 4],
       titleLength,
-      components,
-      seed
+      seed,
     };
   }
 
-  /**
-   * Helper to pick array item based on seed
-   */
   static pickFromArray(array, seed, offset = 0) {
     return array[(seed + offset) % array.length];
   }
 
-  /**
-   * Shuffle components order based on seed
-   */
-  static shuffleComponents(seed) {
-    const order = [1, 2, 3, 4];
-    // Fisher-Yates shuffle with seeded random
-    for (let i = order.length - 1; i > 0; i--) {
-      const j = (seed + i) % (i + 1);
-      [order[i], order[j]] = [order[j], order[i]];
-    }
-    return {
-      badge: order[0],
-      title: order[1],
-      info: order[2],
-      cta: order[3]
-    };
-  }
-
-  /**
-   * Get seeded random number
-   */
   static getSeededRandom(seedStr) {
     let hash = 0;
     if (!seedStr) return 0;
@@ -245,17 +197,12 @@ class PosterService {
     for (let i = 0; i < str.length; i++) {
       const char = str.charCodeAt(i);
       hash = ((hash << 5) - hash) + char;
-      hash = hash & hash; // Convert to 32bit integer
+      hash = hash & hash;
     }
     return Math.abs(hash);
   }
 
-  /**
-   * Set seed for Math.random (simplified implementation)
-   */
   static setSeed(seed) {
-    // In a real implementation, you'd use a seeded random number generator
-    // For now, we'll use the seed directly in our pickFromArray method
     return seed;
   }
 
@@ -267,11 +214,7 @@ class PosterService {
       if (value == null) return fallback;
       if (typeof value === 'object') return value;
       if (typeof value !== 'string') return fallback;
-      try {
-        return JSON.parse(value);
-      } catch {
-        return fallback;
-      }
+      try { return JSON.parse(value); } catch { return fallback; }
     };
 
     const safeArray = (value) => {
@@ -283,27 +226,23 @@ class PosterService {
 
     const categories = safeArray(job.job_category).filter(Boolean).map(String);
     const companyHandle = '@' + String(job.job_company_name || 'tikwork')
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '')
-      .slice(0, 22);
+      .toLowerCase().replace(/[^a-z0-9]+/g, '').slice(0, 22);
 
-    // Handle company logo
     let companyLogo = job.job_company_logo;
     if (!companyLogo || companyLogo.includes('N/A')) {
-      companyLogo = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(job.job_company_name || 'TikWork');
+      companyLogo = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(job.job_company_name || 'TikWork') + '&background=6366f1&color=fff&bold=true';
     }
 
-    // Handle company name with URLs
     let companyName = job.job_company_name;
     if (companyName && companyName.includes('https')) {
-      companyName = "-";
+      companyName = '-';
     }
 
     return {
       categories: categories.slice(0, 4),
       companyHandle,
       companyLogo,
-      companyName
+      companyName,
     };
   }
 }
