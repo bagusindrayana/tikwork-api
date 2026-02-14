@@ -26,6 +26,14 @@ app.use(cors({
 
 // Middleware
 app.use(bodyParser.json());
+
+// Allow iframe embedding from any origin
+app.use((req, res, next) => {
+  res.removeHeader('X-Frame-Options');
+  res.setHeader('Content-Security-Policy', "frame-ancestors *");
+  next();
+});
+
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
